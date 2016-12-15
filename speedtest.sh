@@ -1,16 +1,15 @@
+#!/usr/bin/env bash
 echo 'SpeedTest.Net Test Spoofer Initialized'
 echo ' '
-sleep 2
-echo 'This Tool is made by Amir Hossein Farsad'
-echo 'http://github.com/amirfrsd'
-echo ' '
-sleep 2
+sleep 1
+echo 'This Tool is made by Amir Hossein Farsad https://github.com/amirfrsd'
+echo 'and is modified by Mahmoud Sagharjoughi <mahmood.sa225@gmail.com>'
+sleep 1
 echo '========================================'
 echo '=============Test Spoofer==============='
 echo ' '
-sleep 2
-echo 'IMPORTANT : ARE YOU RUNNING ME ON A MAC? (y/n) :'
-read os
+sleep 1
+
 echo 'Enter Your wanted Download Speed (example : 12227 for 12mbps):'
 read downloadSpeed
 echo 'Well, Now enter your wanted Upload Speed (example : 24228 for 24mbps):'
@@ -19,19 +18,13 @@ echo 'Hmmm, What about your wanted ping? enter it (example : 45):'
 read ping
 echo 'Okay, type in the server name you want to spoof test on it (find it on the internet):'
 read testServer
-yes="y"
-if [ -z "$os" ]
-then
-  echo check your inputs
-  exit 1
+
+if [ "$(uname)" == "Darwin" ]; then
+    md5String=`md5 -s $ping-$uploadSpeed-$downloadSpeed-297aae72 | sed 's/.* //'` 
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    md5String=$(echo -n $ping'-'$uploadSpeed'-'$downloadSpeed'-297aae72' | md5sum | awk '{print $1}' | sed 's/.* //')
 fi
-if [ "$os" = "$yes" ]
-then
-  md5String=`md5 -s $ping-$uploadSpeed-$downloadSpeed-297aae72 | sed 's/.* //'`
-else
-  md5String=`md5 -s $ping-$uploadSpeed-$downloadSpeed-297aae72 | sed 's/.* //'`
-  echo this may not work if you are on linux
-fi
+
 if [ -z "$downloadSpeed" ] || [ -z "$uploadSpeed" ] || [ -z "$ping" ]
 then
   echo check your inputs
@@ -64,6 +57,6 @@ echo Your Fake result is Baked bro
 echo ''
 urlString="http://speedtest.net/my-result/$output"
 echo Result Link: $urlString
-echo Opening it on Safari...
-sleep 4
-open "$urlString"
+echo Opening ...
+sleep 3
+xdg-open $urlString
