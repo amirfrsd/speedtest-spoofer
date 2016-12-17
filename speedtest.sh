@@ -58,5 +58,9 @@ echo ''
 urlString="http://speedtest.net/my-result/$output"
 echo Result Link: $urlString
 echo Opening ...
-sleep 3
-xdg-open $urlString
+sleep 2
+if [ "$(uname)" == "Darwin" ]; then
+    open $urlString
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    xdg-open $urlString
+fi
